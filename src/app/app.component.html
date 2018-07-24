@@ -11,4 +11,10 @@
   <li>PersonId = {{user.personId}}</li>
 </ul>
 
-<app-reservation-form></app-reservation-form>
+<app-reservation-form (reservation)='onReservation($event)'></app-reservation-form>
+
+<div *ngIf='availabilities'>
+  <div *ngFor='let availability of availabilities'>
+    <button (click)='initReservation(availability)'>{{availability.time}}</button>
+  </div>
+</div>
