@@ -1,0 +1,19 @@
+<div>
+  <label>Aantal personen:
+    <input type="number" [formControl]='nbrOfPeople' size=2 min="1" max="6">
+  </label>
+</div>
+<div>
+  <label>Datum:
+    <input type='date' [formControl]='date'>
+  </label>
+</div>
+<div>
+  <label>Middag of avond:
+    <select [formControl]='time'>
+      <option value='1507' label='Middag'>
+        <option value='1508' label='Avond' selected='selected'>
+    </select>
+  </label>
+</div>
+<input type='submit' value='Check beschikbaarheid' (click)='checkAvailability()'>

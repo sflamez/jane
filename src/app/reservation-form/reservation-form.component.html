@@ -1,16 +1,4 @@
 <div>
-  <label>How many people:
-    <input type="number" [formControl]='nbrOfPeople' size=2 min="1" max="6">
-  </label>
+  Klaar om te reserveren?
 </div>
-<div>
-  <label>Date:
-    <input type='date' [formControl]='date'>
-  </label>
-</div>
-<div>
-  <label>Time:
-    <input type='time' [formControl]='time' min="1900">
-  </label>
-</div>
-<input type='submit' (click)='createReservation()'>
+<input type='submit' value='Reserveer' (click)='makeReservation()'>

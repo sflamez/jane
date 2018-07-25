@@ -1,11 +1,11 @@
-import { Availability } from './../availability.model';
-import { User } from './../user.model';
+import { User } from '../user.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Reservation } from '../reservation.model';
 import { FlowState } from './model/flowState.model';
+import { UserService } from '../user.service';
+import { Availability } from '../availability.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,45 +17,53 @@ const httpOptions = {
 export class ResengoService {
   private login_url = 'https://cloudapi.resengo.com';
   private url = 'https://api.resengo.com/v2/';
-  private companyId = 1036629; // 553;
+  private companyId = 1036629;
 
   private flowId = 101;
 
-  user: Observable<User>;
+  private flowState: FlowState;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
-  authenticate(): Observable<User> {
+  login() {
     const body = {
       login: 'sem.flamez@gmail.com',
       password: '46jKEuA*vs!Z',
       type: 1
     };
-    this.user = this.http.post<User>(this.login_url + '/Authentication', body);
-    return this.user;
+    this.http.post<User>(this.login_url + '/Authentication', body).subscribe(u => this.userService.setUser(u));
   }
 
-  initBookingFlow() {
-    // this.http.get(this.url + '/pf');
-  }
-
-  getAvailability(reservation: Reservation): Observable<Availability[]> {
-    const year = reservation.date.getFullYear();
-    const month = reservation.date.getMonth() + 1;
-    const day = reservation.date.getDate();
+  getAvailability(availabilityCheck: Availability): Observable<Availability[]> {
+    const date = new Date(availabilityCheck.date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const url = this.url + `company/${this.companyId}/flow/${this.flowId}/availability/${year}/${month}/${day}`;
-    const options = { params: this.params(reservation) };
-    console.log('Options = ' + JSON.stringify(options));
-    return this.http.get<Availability[]>(url, options);
+    return this.http.get<Availability[]>(url, this.options(availabilityCheck));
   }
 
-  initReservation(): Observable<any> {
+  initFlowState(): Observable<FlowState> {
     const url = this.url + `company/${this.companyId}/flow/${this.flowId}/initialstepconfiguration`;
-    const options = { params: this.params() };
-    return this.http.get(url, options);
+    return this.http.get<FlowState>(url, this.options());
   }
 
-  private params(reservation?: Reservation): HttpParams {
+  initReservation(flowState: FlowState): Observable<FlowState> {
+    const url = this.url + `company/${this.companyId}/flow/${this.flowId}/initialreservation`;
+    return this.http.get<FlowState>(url, this.options());
+  }
+
+  makeReservation(flowState: FlowState) {
+    const url = this.url + `company/${this.companyId}/flow/${this.flowId}/reservation`;
+    return this.http.post<FlowState>(url, this.options());
+  }
+
+  private options(availabilityCheck?: Availability) {
+    const headers = new HttpHeaders({ Authorization: 'bearer ' + this.userService.getUser().token });
+    return { headers: headers, params: this.params(availabilityCheck) };
+  }
+
+  private params(availabilityCheck?: Availability): HttpParams {
     let params = new HttpParams()
       .set('aid', '1')
       .set('cid', '745')
@@ -63,14 +71,12 @@ export class ResengoService {
       .set('rn_partnerid', '51')
       .set('scid', '285')
       .set('flowID', '101');
-    if (reservation) {
+    if (availabilityCheck) {
       params = params
-        .set('NOPersons', '4') // reservation.nbrOfPeople + '')
-        .set('Date', '2018-07-28') // reservation.date.toLocaleDateString())
-        .set('categoryId', '1507'); // 's Avonds
+        .set('NOPersons', availabilityCheck.nbrOfPeople + '')
+        .set('Date', new Date(availabilityCheck.date).toLocaleDateString())
+        .set('categoryId', availabilityCheck.time);
     }
     return params;
   }
-
-  private handleResponse(response) {}
 }

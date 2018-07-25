@@ -1,4 +1,5 @@
 export enum Status {
+  NOT_YET_AVAILABLE = 0,
   AVAILABLE = 21,
   HOLIDAYS = 31,
   WAITING_LIST = 40,

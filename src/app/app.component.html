@@ -6,15 +6,20 @@
 
 <button (click)='authenticate()'>Authenticate</button>
 
-<ul *ngIf='user'>
-  <li>Token = {{user.token}}</li>
-  <li>PersonId = {{user.personId}}</li>
-</ul>
-
-<app-reservation-form (reservation)='onReservation($event)'></app-reservation-form>
+<app-check-availability-form (availabilityCheck)='onAvailabilityCheck($event)'></app-check-availability-form>
 
 <div *ngIf='availabilities'>
   <div *ngFor='let availability of availabilities'>
-    <button (click)='initReservation(availability)'>{{availability.time}}</button>
+    <button *ngIf='isAvailable(availability)' (click)='initReservation(availability)'>{{availability.time}}</button>
+    <button *ngIf='!isAvailable(availability)' (click)='checkAvailability()'>Niet beschikbaar, opnieuw checken?</button>
   </div>
+  <div *ngIf='!availabilities.length'>
+    <button (click)='checkAvailability()'>Geen beschikbaarheid, opnieuw checken?</button>
+  </div>
+</div>
+
+<app-reservation-form></app-reservation-form>
+
+<div *ngIf='flowState'>
+  flowState here
 </div>
