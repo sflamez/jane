@@ -17,3 +17,8 @@
   </label>
 </div>
 <input type='submit' value='Check beschikbaarheid' (click)='checkAvailability()'>
+
+<div *ngIf='checking && !foundAvailabilities'>
+  Checked {{count}} times, still no availabilities found... Do you want to continue?
+  <button (click)='stopChecking()'>Stop checking</button>
+</div>

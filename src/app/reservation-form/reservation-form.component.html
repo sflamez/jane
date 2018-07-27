@@ -1,4 +1,13 @@
+<div *ngIf='availabilities'>
+  <div *ngFor='let availability of availabilities'>
+    <button *ngIf='isAvailable(availability)' (click)='initReservation(availability)'>{{availability.time}}</button>
+  </div>
+</div>
+
 <div>
   Klaar om te reserveren?
 </div>
 <input type='submit' value='Reserveer' (click)='makeReservation()'>
+
+<br>
+<br> flowStateJson(): string { return JSON.stringify(this.flowState); }

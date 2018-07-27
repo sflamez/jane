@@ -1,3 +1,4 @@
+import { Appointment } from './model/appointment.model';
 import { User } from '../user.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -21,17 +22,15 @@ export class ResengoService {
 
   private flowId = 101;
 
-  private flowState: FlowState;
-
   constructor(private http: HttpClient, private userService: UserService) {}
 
-  login() {
+  login(): Observable<User> {
     const body = {
       login: 'sem.flamez@gmail.com',
       password: '46jKEuA*vs!Z',
       type: 1
     };
-    this.http.post<User>(this.login_url + '/Authentication', body).subscribe(u => this.userService.setUser(u));
+    return this.http.post<User>(this.login_url + '/Authentication', body);
   }
 
   getAvailability(availabilityCheck: Availability): Observable<Availability[]> {
@@ -53,7 +52,7 @@ export class ResengoService {
     return this.http.get<FlowState>(url, this.options());
   }
 
-  makeReservation(flowState: FlowState) {
+  makeReservation(appointment: Appointment) {
     const url = this.url + `company/${this.companyId}/flow/${this.flowId}/reservation`;
     return this.http.post<FlowState>(url, this.options());
   }
