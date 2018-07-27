@@ -1,3 +1,4 @@
+import { ReservationConfirmationComponent } from './reservation-confirmation/reservation-confirmation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,7 +8,7 @@ import { ReservationFormComponent } from './reservation-form/reservation-form.co
 import { CheckAvailabilityFormComponent } from './check-availability-form/check-availability-form.component';
 
 @NgModule({
-  declarations: [AppComponent, CheckAvailabilityFormComponent, ReservationFormComponent],
+  declarations: [AppComponent, CheckAvailabilityFormComponent, ReservationFormComponent, ReservationConfirmationComponent],
   imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]

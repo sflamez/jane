@@ -3,5 +3,6 @@ export interface CreditCard {
   cvc: string;
   expiryMonth: number;
   expiryYear: number;
+  expirationDate: any;
   number: string;
 }

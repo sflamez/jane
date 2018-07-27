@@ -33,6 +33,11 @@ export class ResengoService {
     return this.http.post<User>(this.login_url + '/Authentication', body);
   }
 
+  initFlowState(): Observable<any> {
+    const url = this.url + `company/${this.companyId}/flow/${this.flowId}/initialstepconfiguration`;
+    return this.http.get(url, this.options());
+  }
+
   getAvailability(availabilityCheck: Availability): Observable<Availability[]> {
     const date = new Date(availabilityCheck.date);
     const year = date.getFullYear();
@@ -42,23 +47,21 @@ export class ResengoService {
     return this.http.get<Availability[]>(url, this.options(availabilityCheck));
   }
 
-  initFlowState(): Observable<FlowState> {
-    const url = this.url + `company/${this.companyId}/flow/${this.flowId}/initialstepconfiguration`;
-    return this.http.get<FlowState>(url, this.options());
-  }
-
-  initReservation(flowState: FlowState): Observable<FlowState> {
+  initReservation(flowState: FlowState): Observable<any> {
     const url = this.url + `company/${this.companyId}/flow/${this.flowId}/initialreservation`;
-    return this.http.get<FlowState>(url, this.options());
+    return this.http.post(url, flowState, this.options());
   }
 
-  makeReservation(appointment: Appointment) {
+  makeReservation(flowState: FlowState): Observable<any> {
     const url = this.url + `company/${this.companyId}/flow/${this.flowId}/reservation`;
-    return this.http.post<FlowState>(url, this.options());
+    return this.http.post(url, flowState, this.options());
   }
 
   private options(availabilityCheck?: Availability) {
-    const headers = new HttpHeaders({ Authorization: 'bearer ' + this.userService.getUser().token });
+    const headers = new HttpHeaders({
+      'Authorization': 'bearer ' + this.userService.getUser().token,
+      'Content-type': 'application/json'
+    });
     return { headers: headers, params: this.params(availabilityCheck) };
   }
 
@@ -73,9 +76,10 @@ export class ResengoService {
     if (availabilityCheck) {
       params = params
         .set('NOPersons', availabilityCheck.nbrOfPeople + '')
-        .set('Date', new Date(availabilityCheck.date).toLocaleDateString())
+        .set('Date', availabilityCheck.date)
         .set('categoryId', availabilityCheck.time);
     }
     return params;
   }
+
 }

@@ -4,8 +4,10 @@ export interface Availability {
   date?: string;
   time?: string;
   nbrOfPeople?: number;
-  eventID?: number;
   statusID?: Status;
-  timeslotID?: number;
   availabilityStatus?: Status;
+  arrivalDate?: string;
+  arrivalTime?: string;
+  timeslotID?: number;
+  eventID?: number;
 }

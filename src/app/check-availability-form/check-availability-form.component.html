@@ -1,15 +1,15 @@
 <div>
-  <label>Aantal personen:
+    <label>Aantal personen:
     <input type="number" [formControl]='nbrOfPeople' size=2 min="1" max="6">
   </label>
 </div>
 <div>
-  <label>Datum:
+    <label>Datum:
     <input type='date' [formControl]='date'>
   </label>
 </div>
 <div>
-  <label>Middag of avond:
+    <label>Middag of avond:
     <select [formControl]='time'>
       <option value='1507' label='Middag'>
         <option value='1508' label='Avond' selected='selected'>
@@ -18,7 +18,6 @@
 </div>
 <input type='submit' value='Check beschikbaarheid' (click)='checkAvailability()'>
 
-<div *ngIf='checking && !foundAvailabilities'>
-  Checked {{count}} times, still no availabilities found... Do you want to continue?
-  <button (click)='stopChecking()'>Stop checking</button>
+<div *ngIf='foundAvailabilities === false'>
+    <h2>No availabilities found...</h2>
 </div>

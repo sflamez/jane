@@ -1,0 +1,28 @@
+<div *ngIf='appointment'>
+  <h2>Reservatie bevestigd</h2>
+  <div>
+    <label>Reserveringsnummer:
+      <input [value]='appointment.appointmentRefId' readonly='true'>
+    </label>
+  </div>
+  <div>
+    <label>Reserveringsnummer:
+      <input [value]='appointment.appointmentRefId' readonly='true'>
+    </label>
+  </div>
+  <div>
+    <label>Datum:
+      <input [value]='appointment.arrivalDate' readonly='true'>
+    </label>
+  </div>
+  <div>
+    <label>Uur:
+      <input [value]='appointment.arrivalTimeString' readonly='true'>
+    </label>
+  </div>
+  <div>
+    <label>Aantal personen:
+      <input [value]='appointment.totalNOPersons' readonly='true'>
+    </label>
+  </div>
+</div>

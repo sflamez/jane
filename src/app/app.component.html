@@ -1,23 +1,23 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <img width="50" alt="Angular Logo" style='background-color: white; margin-top: 1em' src="https://www.thejaneantwerp.com/wp-content/themes/jane/img/jane-logo.png">
-  <h1>{{ title }}</h1>
-</div>
-<div>
-  <h2 *ngIf='loggedIn()'>Aangemeld</h2>
+    <img width="50" alt="Angular Logo" style='background-color: white; margin-top: 1em' src="https://www.thejaneantwerp.com/wp-content/themes/jane/img/jane-logo.png">
+    <h1>{{ title }}</h1>
 </div>
 <br>
 <br>
 
-<app-check-availability-form (availabilities)='onAvailabilities($event)'></app-check-availability-form>
-
-<br>
-<br>
-
-<app-reservation-form [availabilities]='availabilities' [flowState]='flowState'></app-reservation-form>
-
-<br>
-<br>
-<div *ngIf='flowState'>
-  {{flowStateJson()}}
+<div *ngIf='loggedIn'>
+    <app-check-availability-form (availabilities)='onAvailabilities($event)'></app-check-availability-form>
 </div>
+
+<br>
+<br>
+
+<div *ngIf='availabilities'>
+    <app-reservation-form [availabilities]='availabilities' [flowState]='flowState' (appointment)='onAppointment($event)'></app-reservation-form>
+</div>
+
+<br>
+<br>
+
+<app-reservation-confirmation [appointment]='appointment'></app-reservation-confirmation>
